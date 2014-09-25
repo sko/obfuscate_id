@@ -14,7 +14,7 @@ module ObfuscateId
   end
 
   def self.show(id, spin)
-    ScatterSwap.reverse_hash(id, spin)
+    ScatterSwap.reverse_hash(id, spin).sub(/^0+/,'')
   end
 
 
