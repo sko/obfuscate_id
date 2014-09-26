@@ -1,5 +1,8 @@
 module ObfuscateId
 
+  HIDE_PREFIX='x'
+  HIDE_PREFIX_REGEXP=Regexp.new("^#{HIDE_PREFIX}")
+
   def obfuscate_id(options = {})
     require 'scatter_swap'
 
@@ -10,10 +13,15 @@ module ObfuscateId
   end
 
   def self.hide(id, spin)
-    ScatterSwap.hash(id, spin)
+    "#{HIDE_PREFIX}#{ScatterSwap.hash(id, spin)}"
   end
 
   def self.show(id, spin)
+    if id.to_s.match(HIDE_PREFIX_REGEXP).present?
+      id = id.sub(HIDE_PREFIX_REGEXP,'')
+    else
+      return id	
+    end
     ScatterSwap.reverse_hash(id, spin).sub(/^0+/,'')
   end
 
